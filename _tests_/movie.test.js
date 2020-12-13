@@ -33,7 +33,7 @@ describe('movies routes', () => {
     });
 
     it('gets all movies via GET', async () => {
-        const movies = await await Promise.all([
+        const movies = await Promise.all([
             {
                 title: 'Snatch',
                 yearReleased: 2000,
@@ -56,5 +56,23 @@ describe('movies routes', () => {
 
         expect(res.body).toEqual(expect.arrayContaining(movies));
         expect(res.body).toHaveLength(movies.length);
+    });
+
+    it('gets a single movie by Id via GET', async () => {
+        const movie = await Movie.insert({
+            title: 'Oceans 11',
+            yearReleased: 2001,
+            director: 'Steven Soderbergh'
+        });
+
+        const res = await request(app)
+            .get(`/movies/${movie.id}`)
+
+        expect(res.body).toEqual({
+            id: movie.id,
+            title: 'Oceans 11',
+            yearReleased: 2001,
+            director: 'Steven Soderbergh'
+        });
     });
 });
