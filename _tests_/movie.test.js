@@ -1,24 +1,60 @@
+const fs = require('fs');
 const request = require('supertest');
 const app = require('../lib/app');
+const pool = require('../lib/utils/pool');
+const Movie = require('../lib/models/Movie');
 
-describe('app endpoints', () => {
-    it('creates a new Movie via POST', async () => {
+
+describe('movies routes', () => {
+
+    beforeEach(() => {
+        return pool.query(fs.readFileSync('./sql/setup.sql', 'utf-8'));
+    });
+
+    afterAll(() => {
+        return pool.end();
+    });
+
+    it('creates a new movie via POST', async () => {
         const res = await request(app)
             .post('/movies')
             .send({
                 title: 'Snatch',
                 yearReleased: 2000,
-                director: 'Guy Richie',
-                featuredSong: 'Angel'
-            })
+                director: 'Guy Richie'
+            });
 
         expect(res.body).toEqual({
-            id: 1,
+            id: '32',
             title: 'Snatch',
-            yearReleased: 2000,
-            director: 'Guy Richie',
-            featuredSong: 'Angel'
+            yearReleased: '2000',
+            director: 'Guy Richie'
         });
     });
 
+    it('gets all movies via GET', async () => {
+        const movies = await await Promise.all([
+            {
+                title: 'Snatch',
+                yearReleased: 2000,
+                director: 'Guy Richie'
+            },
+            {
+                title: 'Interstellar',
+                yearReleased: 2014,
+                director: 'Christopher Nolan'
+            },
+            {
+                title: 'Oceans 11',
+                yearReleased: 2001,
+                director: 'Steven Soderbergh'
+            }
+        ].map(movie => Movie.insert(movie)));
+
+        const res = await request(app)
+            .get('/movies');
+
+        expect(res.body).toEqual(expect.arrayContaining(movies));
+        expect(res.body).toHaveLength(movies.length);
+    });
 });
