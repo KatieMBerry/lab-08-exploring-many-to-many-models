@@ -25,7 +25,7 @@ describe('movies routes', () => {
             });
 
         expect(res.body).toEqual({
-            id: '32',
+            id: '1',
             title: 'Snatch',
             yearReleased: '2000',
             director: 'Guy Richie'

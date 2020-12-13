@@ -1,12 +1,11 @@
 DROP TABLE IF EXISTS movies CASCADE;
-DROP TABLE IF EXISTS actors CASCADE;
-DROP TABLE IF EXISTS movies_actors;
+-- DROP TABLE IF EXISTS actors;
 
 CREATE TABLE movies (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     title TEXT NOT NULL,
     year_released INTEGER NOT NULL,
-    director TEXT,
+    director TEXT
 );
 
 -- CREATE TABLE actors (
