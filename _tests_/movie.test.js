@@ -68,11 +68,29 @@ describe('movies routes', () => {
         const res = await request(app)
             .get(`/movies/${movie.id}`)
 
-        expect(res.body).toEqual({
+        expect(res.body).toEqual({ movie });
+    });
+
+    it('updates a movie via PUT', async () => {
+        const movie = await Movie.insert({
+            title: 'Snatch',
+            yearReleased: 2020,
+            director: 'Guy Richie'
+        });
+
+        const res = await request(app)
+            .put(`/movies/${movie.id}`)
+            .send({
+                title: 'Snatch',
+                yearReleased: 2000,
+                director: 'Guy Richie'
+            });
+
+        expect(response.body).toEqual({
             id: movie.id,
-            title: 'Oceans 11',
-            yearReleased: 2001,
-            director: 'Steven Soderbergh'
+            title: 'Snatch',
+            yearReleased: 2000,
+            director: 'Guy Richie'
         });
     });
 });
