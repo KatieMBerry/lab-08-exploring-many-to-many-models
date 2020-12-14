@@ -66,9 +66,9 @@ describe('movies routes', () => {
         });
 
         const res = await request(app)
-            .get(`/movies/${movie.id}`)
+            .get(`/movies/${movie.id}`);
 
-        expect(res.body).toEqual({ movie });
+        expect(res.body).toEqual(movie);
     });
 
     it('updates a movie via PUT', async () => {
@@ -86,10 +86,10 @@ describe('movies routes', () => {
                 director: 'Guy Richie'
             });
 
-        expect(response.body).toEqual({
+        expect(res.body).toEqual({
             id: movie.id,
             title: 'Snatch',
-            yearReleased: 2000,
+            yearReleased: '2000',
             director: 'Guy Richie'
         });
     });
