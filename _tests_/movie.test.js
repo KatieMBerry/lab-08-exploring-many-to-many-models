@@ -93,4 +93,18 @@ describe('movies routes', () => {
             director: 'Guy Richie'
         });
     });
+
+    it('deletes a movie by id via DELETE and returns it', async () => {
+        const movie = await Movie.insert({
+            title: 'Oceans 11',
+            yearReleased: 2001,
+            director: 'Steven Soderbergh'
+        });
+
+        const res = await request(app)
+            .delete(`/movies/${movie.id}`)
+            .send(movie);
+
+        expect(res.body).toEqual(movie);
+    });
 });
