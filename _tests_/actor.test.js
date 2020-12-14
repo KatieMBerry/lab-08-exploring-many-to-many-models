@@ -50,4 +50,19 @@ describe('actor routes', () => {
 
         expect(res.body).toEqual(actor);
     });
+
+    it('updates anactor via PUT', async () => {
+        const actor = await Actor.insert({
+            name: 'Michael McCaine'
+        });
+
+        const res = await request(app)
+            .put(`/actors/${actor.id}`)
+            .send({ name: 'Michael Caine' });
+
+        expect(res.body).toEqual({
+            id: actor.id,
+            name: 'Michael Caine'
+        });
+    });
 });
