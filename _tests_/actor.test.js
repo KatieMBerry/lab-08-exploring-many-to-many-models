@@ -65,4 +65,13 @@ describe('actor routes', () => {
             name: 'Michael Caine'
         });
     });
+
+    it('deletes an actor by id and returns it', async () => {
+        const actor = await Actor.insert({ name: 'Matthew McConaughey' });
+
+        const res = await request(app)
+            .delete(`/actors/${actor.id}`);
+
+        expect(res.body).toEqual(actor);
+    });
 });
