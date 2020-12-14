@@ -28,4 +28,18 @@ describe('actor routes', () => {
         });
     });
 
+    it('gets all actors via GET', async () => {
+        const actors = await Promise.all([
+            { name: 'Brad Pitt' },
+            { name: 'Michael Caine' },
+            { name: 'Matthew McConaughey' }
+        ].map(actor => Actor.insert(actor)));
+
+        const res = await request(app)
+            .get('/actors');
+
+        expect(res.body).toEqual(expect.arrayContaining(actors));
+        expect(res.body).toHaveLength(actors.length);
+    });
+
 });
