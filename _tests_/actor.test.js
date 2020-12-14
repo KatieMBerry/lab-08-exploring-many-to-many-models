@@ -2,7 +2,6 @@ const fs = require('fs');
 const request = require('supertest');
 const app = require('../lib/app');
 const pool = require('../lib/utils/pool');
-const Movie = require('../lib/models/Movie');
 const Actor = require('../lib/models/Actor');
 
 
@@ -22,7 +21,7 @@ describe('actor routes', () => {
             .send({ name: 'Jessica Chastain' });
 
         expect(res.body).toEqual({
-            id: '15',
+            id: '1',
             name: 'Jessica Chastain'
         });
     });
