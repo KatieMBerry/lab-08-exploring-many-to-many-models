@@ -1,7 +1,7 @@
 const fs = require('fs');
+const pool = require('../lib/utils/pool');
 const request = require('supertest');
 const app = require('../lib/app');
-const pool = require('../lib/utils/pool');
 const Movie = require('../lib/models/Movie');
 const Actor = require('../lib/models/Actor');
 
@@ -59,8 +59,8 @@ describe('movies routes', () => {
         expect(res.body).toHaveLength(movies.length);
     });
 
-    it('finds a single movie by Id via GET, and shows the actors from the film', async () => {
-        await Promise.All([
+    it.only('finds a single movie by Id via GET, and shows the actors from the film', async () => {
+        await Promise.all([
             { name: 'Matt Damon' },
             { name: 'Michael Caine' },
             { name: 'Jessica Chastain' },
