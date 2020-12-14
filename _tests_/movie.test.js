@@ -102,8 +102,7 @@ describe('movies routes', () => {
         });
 
         const res = await request(app)
-            .delete(`/movies/${movie.id}`)
-            .send(movie);
+            .delete(`/movies/${movie.id}`);
 
         expect(res.body).toEqual(movie);
     });
