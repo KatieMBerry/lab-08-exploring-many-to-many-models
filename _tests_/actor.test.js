@@ -3,6 +3,7 @@ const request = require('supertest');
 const app = require('../lib/app');
 const pool = require('../lib/utils/pool');
 const Movie = require('../lib/models/Movie');
+const Actor = require('../lib/models/Actor');
 
 
 describe('actor routes', () => {
@@ -18,9 +19,7 @@ describe('actor routes', () => {
     it('creates a new actor via POST', async () => {
         const res = await request(app)
             .post('/actors')
-            .send({
-                name: 'Jessica Chastain'
-            });
+            .send({ name: 'Jessica Chastain' });
 
         expect(res.body).toEqual({
             id: '15',
@@ -42,4 +41,14 @@ describe('actor routes', () => {
         expect(res.body).toHaveLength(actors.length);
     });
 
+    it('finds an actor by id via GET', async () => {
+        const actor = await Actor.insert({
+            name: 'Matthew McConaughey'
+        });
+
+        const res = await request(app)
+            .get(`/actors/${actor.id}`);
+
+        expect(res.body).toEqual(actor);
+    });
 });
