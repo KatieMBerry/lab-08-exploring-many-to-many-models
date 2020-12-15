@@ -59,12 +59,11 @@ describe('movies routes', () => {
         expect(res.body).toHaveLength(movies.length);
     });
 
-    it('finds a single movie by Id via GET, and shows the actors from the film', async () => {
-        await Promise.all([
+    it.only('finds a single movie by Id via GET, and shows the actors from the film', async () => {
+        const actors = await Promise.all([
             { name: 'Matt Damon' },
             { name: 'Michael Caine' },
-            { name: 'Jessica Chastain' },
-            { name: 'Brad Pitt' }
+            { name: 'Jessica Chastain' }
         ].map(actor => Actor.insert(actor)));
 
         const movie = await Movie.insert({
