@@ -59,7 +59,7 @@ describe('movies routes', () => {
         expect(res.body).toHaveLength(movies.length);
     });
 
-    it.only('finds a single movie by Id via GET, and shows the actors from the film', async () => {
+    it('finds a single movie by Id via GET, and shows the actors from the film', async () => {
         await Promise.all([
             { name: 'Matt Damon' },
             { name: 'Michael Caine' },
@@ -79,7 +79,7 @@ describe('movies routes', () => {
 
         expect(res.body).toEqual({
             ...movie,
-            actors: ['Matt Damon', 'Michael Caine', 'Jessica Chastain']
+            actors: expect.arrayContaining(['Matt Damon', 'Michael Caine', 'Jessica Chastain'])
         });
     });
 
