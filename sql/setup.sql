@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS movies CASCADE;
-DROP TABLE IF EXISTS actors;
+DROP TABLE IF EXISTS actors CASCADE;
+DROP TABLE IF EXISTS movies_actors;
 
 CREATE TABLE movies (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -13,8 +14,8 @@ CREATE TABLE actors (
     name TEXT NOT NULL
 );
 
--- CREATE TABLE movies_actors (
---     movie_id BIGINT REFERENCES movies(id),
---     actor_id BIGINT REFERENCES actors(id),
---     PRIMARY KEY(movie_id, actor_id)
--- );
+CREATE TABLE movies_actors (
+    movie_id BIGINT REFERENCES movies(id),
+    actor_id BIGINT REFERENCES actors(id),
+    PRIMARY KEY(movie_id, actor_id)
+);

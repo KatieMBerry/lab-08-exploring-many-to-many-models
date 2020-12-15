@@ -1,8 +1,9 @@
 const fs = require('fs');
+const pool = require('../lib/utils/pool');
 const request = require('supertest');
 const app = require('../lib/app');
-const pool = require('../lib/utils/pool');
 const Movie = require('../lib/models/Movie');
+const Actor = require('../lib/models/Actor');
 
 
 describe('movies routes', () => {
@@ -58,17 +59,27 @@ describe('movies routes', () => {
         expect(res.body).toHaveLength(movies.length);
     });
 
-    it('gets a single movie by Id via GET', async () => {
+    it.only('finds a single movie by Id via GET, and shows the actors from the film', async () => {
+        const actors = await Promise.all([
+            { name: 'Matt Damon' },
+            { name: 'Michael Caine' },
+            { name: 'Jessica Chastain' }
+        ].map(actor => Actor.insert(actor)));
+
         const movie = await Movie.insert({
-            title: 'Oceans 11',
-            yearReleased: 2001,
-            director: 'Steven Soderbergh'
+            title: 'Interstellar',
+            yearReleased: 2014,
+            director: 'Christopher Nolan',
+            actors: ['Matt Damon', 'Michael Caine', 'Jessica Chastain']
         });
 
         const res = await request(app)
             .get(`/movies/${movie.id}`);
 
-        expect(res.body).toEqual(movie);
+        expect(res.body).toEqual({
+            ...movie,
+            actors: expect.arrayContaining(['Matt Damon', 'Michael Caine', 'Jessica Chastain'])
+        });
     });
 
     it('updates a movie via PUT', async () => {
